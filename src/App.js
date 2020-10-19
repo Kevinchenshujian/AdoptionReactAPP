@@ -8,7 +8,7 @@ import ThemeContext from "./ThemeContext";
 
 //component组件
 const App = () => {
-  const themeHook = useState("darkblue");
+  const themeHook = useState("pink");
   return (
     <ThemeContext.Provider value={themeHook}>
       <div>

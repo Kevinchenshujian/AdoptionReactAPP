@@ -1,5 +1,7 @@
 import React from "react";
 import pet from "@frontendmasters/pet";
+import { navigate } from "@reach/router";
+import Modal from "./Modal";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
@@ -7,7 +9,7 @@ import ThemeContext from "./ThemeContext";
 class Details extends React.Component {
   //only run once after first render
   //need some specification for Babel
-  state = { loading: true };
+  state = { loading: true, showModal: false };
   /*
   constructor(props) {
     super(props);
@@ -23,6 +25,7 @@ class Details extends React.Component {
     //create一个新的context
     pet.animal(this.props.id).then(({ animal }) => {
       this.setState({
+        url: animal.url, //url for adopt the pet
         name: animal.name,
         animal: animal.type,
         location: `${animal.contact.address.city} 
@@ -35,12 +38,24 @@ class Details extends React.Component {
     }, console.error);
   }
 
+  toggleModal = () => this.setState({ showModal: !this.state.showModal });
+
+  adopt = () => navigate(this.state.url);
+
   render() {
     if (this.state.loading) {
       return <h1>loading</h1>;
     }
 
-    const { animal, breed, location, description, name, media } = this.state;
+    const {
+      animal,
+      breed,
+      location,
+      description,
+      name,
+      media,
+      showModal,
+    } = this.state;
     //ThemeContext, 因为class里面无法使用hook，所以这里相当于create 一个小component来执行
     //consumer
     return (
@@ -51,13 +66,25 @@ class Details extends React.Component {
           <h2>{`${animal} - ${breed} - ${location}`}</h2>
           <ThemeContext.Consumer>
             {(themeHook) => (
-              <button style={{ backgroundColor: themeHook[0] }}>
+              <button
+                onClick={this.toggleModal}
+                style={{ backgroundColor: themeHook[0] }}
+              >
                 Adopt {name}
               </button>
             )}
           </ThemeContext.Consumer>
 
           <p>{description}</p>
+          {showModal ? (
+            <Modal>
+              <h1>Would you like to adopt {name}?</h1>
+              <div className="buttons">
+                <button onClick={this.adopt}>Yes</button>
+                <button onClick={this.toggleModal}>No, I am a monster</button>
+              </div>
+            </Modal>
+          ) : null}
         </div>
       </div>
     );

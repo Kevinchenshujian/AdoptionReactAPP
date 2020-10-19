@@ -41,7 +41,6 @@ class ErrorBoundary extends Component {
     }
 
     //不return的话，当出现不符合if时候，就会表现出吃掉整个出错的children
-
     return this.props.children; //子组件
     //return 了上面的这个link的children “Click here”
   }

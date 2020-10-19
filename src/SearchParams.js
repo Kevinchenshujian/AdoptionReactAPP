@@ -20,7 +20,7 @@ const SearchParams = () => {
   const [breeds, setBreeds] = useState([]);
   const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
   const [pets, setPets] = useState([]);
-  const [theme] = useContext(ThemeContext);
+  const [theme, setTheme] = useContext(ThemeContext); //a hook contain context
 
   //return a promise
   async function requestPets() {
@@ -71,6 +71,19 @@ const SearchParams = () => {
         </label>
         <AnimalDropdown />
         <BreedDropdown />
+        <label htmlFor="theme">
+          Theme
+          <select
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            onBlur={(e) => setTheme(e.target.value)}
+          >
+            <option value="pink">Pink</option>
+            <option value="chartreuse">Chartreuse</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+          </select>
+        </label>
         {
           //console.log("I run first")
           /* <label htmlFor="animal">
